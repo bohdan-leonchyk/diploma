@@ -1,0 +1,11 @@
+.lbl {
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 100%;
+}
+
+.selected, .selected:hover {
+	background-color: orange;
+}

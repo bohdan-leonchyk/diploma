@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/home.css">
+    <title>Відео контент</title>
+</head>
+<body>
+<div class="bg bg-dark">
+    <div class="row justify-content-md-center">
+        <div class="col-md-2">
+            <form th:action="@{/logout}" method="get" class="form">
+                <button class="btn btn-primary" name="logout" type="Submit">Вийти</button>
+            </form>
+        </div>
+        <div class="col-md-2">
+            <h2 class="username text-white"></h2>
+        </div>
+        <div class="col-md-2">
+            <h5 class="honor text-info"></h5>
+        </div>
+        <div class="col-md-2">
+            <h5 class="balance text-warning"></h5>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-3 mt-5">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" aria-hidden="true">New:</span>
+                </div>
+                <input type="text" class="topicTitle form-control"
+                       placeholder="Topic title" aria-label="topicTitle"
+                       aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col-md-2 mt-5">
+            <input class="topicEndDate form-control" type="date" />
+        </div>
+        <div class="col-md-2 mt-5">
+            <button class="createTopic btn btn-primary" type="button">Create
+                topic</button>
+        </div>
+        <div class="col-md-2 mt-5">
+            <div class="col-md-6">
+                <button class="ctView btn btn-primary" type="button">Closed
+                    topics</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <h3 class="topicMes text-white"></h3>
+    </div>
+    <div class="row justify-content-md-center">
+        <h1 class="col-md-12 text-center text-white mt-3 mb-3">Active
+            topics:</h1>
+        <div class="atpc col-md-5"></div>
+    </div>
+    <div class="row justify-content-md-center">
+        <h1 class="col-md-12 text-center text-white mt-3 mb-3">Answered
+            topics:</h1>
+        <div class="antpc col-md-5"></div>
+    </div>
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/home.js"></script>
+
+</body>
+</html>

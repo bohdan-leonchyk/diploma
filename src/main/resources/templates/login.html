@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/login.css" rel="stylesheet" />
+    <title>Відео контент</title>
+</head>
+<body>
+<div class="bg">
+    <div class="container">
+        <br /> <br />
+        <div class="row justify-content-md-center">
+            <h1 class="col-md-auto text-white">відео контент</h1>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="p-3 mb-2 bg-danger text-white" align="center"
+                 th:if="${param.error}">
+                <h5 class="col-md-auto">Доступ заборонено</h5>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <form th:action="@{/}" method="POST" class="form-signin">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fa fa-user-circle-o"
+                                  aria-hidden="true"></span>
+                    </div>
+                    <input id="username" name="username" type="text"
+                           class="form-control username" placeholder="ім'я"
+                           aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fa fa-key" aria-hidden="true"></span>
+                    </div>
+                    <input id="password" name="password" type="password"
+                           class="form-control password" placeholder="пароль"
+                           aria-label="Password" aria-describedby="basic-addon1">
+                </div>
+                <button class="btn btn-primary btn-block btn-large" name="Submit"
+                        type="Submit">вхід</button>
+                <button class="registration btn btn-primary btn-block btn-large"
+                        type="button">реєстрація</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/registration.js"></script>
+</body>
+</html>
