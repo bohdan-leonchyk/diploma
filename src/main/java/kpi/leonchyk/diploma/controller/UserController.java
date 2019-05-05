@@ -1,4 +1,7 @@
 package kpi.leonchyk.diploma.controller;
+
+import kpi.leonchyk.diploma.domain.SubscriptionType;
+import kpi.leonchyk.diploma.domain.User;
 import kpi.leonchyk.diploma.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,7 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity<Void> registerUser(@RequestParam String username, @RequestParam String password) {
         try {
-            userService.save(username, password);
+            userService.signUp(username, password);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
@@ -35,6 +38,24 @@ public class UserController {
 
     @RequestMapping(value = "/user/home/data", method = RequestMethod.GET)
     public ResponseEntity<?> login(Principal principal) {
-        return new ResponseEntity<>(userService.findByUsername(principal.getName()), HttpStatus.OK);
+        User user = userService.findByUsername(principal.getName());
+        userService.checkSubscriptionDate(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/home/subscribe", method = RequestMethod.POST)
+    public ResponseEntity<?> subscribe(@RequestParam String subscriptionType, Principal principal) {
+        try {
+            SubscriptionType type = SubscriptionType.valueOf(subscriptionType);
+            userService.subscribe(type, principal);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/user/home/films", method = RequestMethod.GET)
+    public ResponseEntity<?> getFilms() {
+        return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
     }
 }

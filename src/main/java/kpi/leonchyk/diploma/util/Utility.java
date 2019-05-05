@@ -45,6 +45,10 @@ public interface Utility {
         Calendar calendar = Calendar.getInstance();
         subscription.setSubscriptionStartDate(calendar.getTime());
         subscription.setSubscriptionType(subscriptionType);
+        if (user.isSubscribed()) {
+            Date lastSubscriptionDate = user.getSubscriptions().get(user.getSubscriptions().size() - 1).getGetSubscriptionEndDate();
+            calendar.setTime(lastSubscriptionDate);
+        }
         if (subscriptionType.equals(SubscriptionType.MONTHLY)) {
             subscription.setPrice(10);
             calendar.add(Calendar.MONTH, 1);
@@ -55,5 +59,14 @@ public interface Utility {
             subscription.setGetSubscriptionEndDate(calendar.getTime());
         }
         return subscription;
+    }
+
+    static boolean isSubscriptionEnd(User user) {
+        if (user.isSubscribed()) {
+            Calendar calendar = Calendar.getInstance();
+            Date lastSubscriptionDate = user.getSubscriptions().get(user.getSubscriptions().size() - 1).getGetSubscriptionEndDate();
+            return lastSubscriptionDate.before(new Date());
+        }
+        return false;
     }
 }

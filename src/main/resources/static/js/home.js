@@ -1,96 +1,63 @@
-//$('.datepicker').datepicker();
-
 $.ajax({
-	type : 'GET',
-	url : '/user/home/data',
-	dataType : 'json',
-	success : function(data) {
-		$('.username').text(data.username);
-		$('.honor').text('Honor: '+data.honor);
-		$('.balance').text('Balance: '+data.balance+'₴');
-	}
+    type : 'GET',
+    url : '/user/home/data',
+    dataType : 'json',
+    success : function(data) {
+        $('.username').text(data.username);
+        if (data.subscribed === true) {
+            var sed = data.subscriptions.slice(-1).pop().getSubscriptionEndDate.split(' ')[0];
+            $('.subscription_info').text(sed);
+            $('.subscription_info_prefix').removeClass('text-warning');
+            $('.subscription_info_prefix').addClass('text-info');
+        } else {
+            $('.subscription_info').text('');
+            $('.subscription_info_prefix').removeClass('text-info');
+            $('.subscription_info_prefix').addClass('text-warning');
+            $('.subscription_info_prefix').text("Підписка не оформлена");
+        }
+    }
 });
 
-$.ajax({
-	type : 'GET',
-	url : '/user/home/topics/active',
-	dataType : 'json',
-	success : function(data) {
-		if (data.length > 0) {
-//			$('<p>Active topics:</p>').appendTo('.atpc');
-			$('<table class="activeTopics table-dark table-bordered"></table>').appendTo('.atpc');
-			$('<thead class="bg-info"></thead>').appendTo('.activeTopics');
-			$('<tbody></tbody>').appendTo('.activeTopics');
-			$('.activeTopics thead').append('<tr class="head"><th class="numb">#</th><th>Topics</th><th>Answers</th><th>Created dates</th><th>End dates</th><th>Creator</th><th>Bets</th></tr>');
-			for (var i = 0; i < data.length; i++) {
-				$('.activeTopics tbody').append('<tr class="cont"><td class="numb">'+data[i].id+'</td><td class="tdtitle">'+data[i].title+'</td><td><select class="sel'+i+'"></select></td><td>'+data[i].createdDate+'</td><td class="cdate">'+data[i].closedDate+'</td><td>'+data[i].createdBy+'</td><td class="betAmount bg-warning text-dark">2₴</td><td><button class="submitAnswer btn btn-primary"><h1 class="text-success">₴</h1></button></td></tr>');
-				for (var j = 0; j < data[i].answers.length; j++) {
-					let numb = data[i].answers[j].id;
-					$('.sel'+i).append('<option id="'+numb+'" value="'+data[i].answers[j].answer+'">'+data[i].answers[j].answer+'</option>');
-				}
-			}
-		}
-		
-		$('.submitAnswer').click(function(){
-			if (confirm("Are you sure you want to make a Ebabet?")) {
-				$.ajax({
-					type : 'POST',
-					url : '/user/home/ebabet',
-					data : {
-						topic : parseInt($(this).parents('tr').find('.numb').text()),
-						answer: $(this).parents('tr').find('select').val(),
-						betAmount: parseInt($(this).parents('tr').find('.betAmount').text().match(/\d+/))
-					},
-					success : function() {
-						location.reload();
-					},
-					error : function() {
-						alert("За тобой уже выехали, читер.");
-					}
-				});
-			}
-		});
-	}
+$('.subscribe').click(function() {
+    if ($('.card_number').val().length == 16
+            && $('.card_month').val().length == 2
+            && $('.card_year').val().length == 2
+            && $('.card_cvv').val().length == 3) {
+        var val = $('input[name=subscription_type]:checked').val();
+        if (val === "ANNUAL") {
+            val = 100;
+        } else if (val === "MONTHLY") {
+            val = 10;
+        }
+        if (confirm('Ви впевнені, що бажаєте оформити підписку за ' + val + ' USD ?')) {
+            $.ajax({
+                type : 'POST',
+                url : '/user/home/subscribe',
+                data : {
+                    subscriptionType : $('input[name=subscription_type]:checked').val()
+                },
+                success : function() {
+                    location.reload();
+                },
+                error : function() {
+                    alert('Помилка');
+                }
+            });
+        }
+    } else {
+        alert("Будь ласка заповніть форму коректно.");
+    }
 });
 
-$.ajax({
-	type : 'GET',
-	url : '/user/home/topics/answered',
-	dataType : 'json',
-	success : function(data) {
-		if (data.length > 0) {
-			$('<table class="answeredTopics table-dark table-bordered"></table>').appendTo('.antpc');
-			$('<thead class="bg-info"></thead>').appendTo('.answeredTopics');
-			$('<tbody></tbody>').appendTo('.answeredTopics');
-			$('.answeredTopics thead').append('<tr class="head"><th>Topics</th><th>Answers</th><th>Answered Dates</th><th>End dates</th><th>Bets</th></tr>');
-			for (var i = 0; i < data.length; i++) {
-				$('.answeredTopics tbody').append('<tr class="cont"><td class="tdtitle">'+data[i].topic.title+'</td><td>'+data[i].answerValue+'</td><td>'+data[i].answeredDate+'</td><td>'+data[i].topic.closedDate+'</td><td class="bg-warning text-dark">'+data[i].betAmount+'₴</td></tr>');
-			}
-		}
-		
-	}
+$('.card_number, .card_month, .card_year, .card_cvv').on('input', function (event) {
+    this.value = this.value.replace(/[^0-9]/g, '');
 });
 
-$('.ctView').click(function() {
-	$(location).attr('href', '/user/closed_topics')
-});
-
-$('.createTopic').click(function() {
-	if (confirm('Are you sure to create topic: "'+$('.topicTitle').val()+'" ?')) {
-		$.ajax({
-			type : 'POST',
-			url : '/user/home/topics/create',
-			data : {
-				title : $('.topicTitle').val(),
-				endDate : $('.topicEndDate').val()
-			},
-			success : function() {
-				$('.topicMes').removeClass('bg-danger').addClass('bg-success').text('Success!');
-				location.reload();
-			},
-			error : function() {
-				$('.topicMes').removeClass('bg-success').addClass('bg-danger').text('Wrong date or emty Topic title');
-			}
-		});
-	}
+$('.radio_in').click(function() {
+    var val = $('input[name=subscription_type]:checked').val();
+    if (val === "ANNUAL") {
+        $('.subscription_price').text('100');
+    } else if (val === "MONTHLY") {
+        $('.subscription_price').text('10');
+    }
 });

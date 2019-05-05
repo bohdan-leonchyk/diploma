@@ -1,6 +1,7 @@
 package kpi.leonchyk.diploma.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class Subscription implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id")
     private int id;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -102,7 +104,6 @@ public class Subscription implements Serializable {
     public String toString() {
         return "Subscription{" +
                 "id=" + id +
-                ", user=" + user +
                 ", subscriptionType=" + subscriptionType +
                 ", subscriptionStartDate=" + subscriptionStartDate +
                 ", getSubscriptionEndDate=" + getSubscriptionEndDate +

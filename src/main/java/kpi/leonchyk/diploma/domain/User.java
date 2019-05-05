@@ -30,6 +30,8 @@ public class User {
     private Date regDate;
     @Column(name = "balance", nullable = false)
     private int balance;
+    @Column(name = "is_subscribed", nullable = false)
+    private boolean isSubscribed;
     @Column(name = "subscriptions")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions = new ArrayList<>();
@@ -90,6 +92,14 @@ public class User {
         this.balance = balance;
     }
 
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+    }
+
     public List<Subscription> getSubscriptions() {
         return subscriptions;
     }
@@ -117,10 +127,12 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 ", roles=" + roles +
                 ", regDate=" + regDate +
                 ", balance=" + balance +
+                ", isSubscribed=" + isSubscribed +
                 ", subscriptions=" + subscriptions +
                 '}';
     }

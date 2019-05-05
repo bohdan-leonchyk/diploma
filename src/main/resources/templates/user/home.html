@@ -13,62 +13,108 @@
 <body>
 <div class="bg bg-dark">
     <div class="row justify-content-md-center">
-        <div class="col-md-2">
+        <div class="col-md-2 mt-3">
             <form th:action="@{/logout}" method="get" class="form">
                 <button class="btn btn-primary" name="logout" type="Submit">Вийти</button>
             </form>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 mt-3">
             <h2 class="username text-white"></h2>
         </div>
-        <div class="col-md-2">
-            <h5 class="honor text-info"></h5>
+        <div class="col-md-2 mt-3">
+            <h5 class="subscription_info_prefix text-info">Підписка активна до: </h5><h5 class="subscription_info text-info"></h5>
         </div>
-        <div class="col-md-2">
-            <h5 class="balance text-warning"></h5>
+        <div class="col-md-2 mt-3">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Підписатися
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Підписка</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mt-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true">Номер картки:</span>
+                                </div>
+                                <input type="text" class="card_number form-control"
+                                       placeholder="Номер картки" aria-label="subscriptionType"
+                                       aria-describedby="basic-addon1" maxlength="16">
+                            </div>
+                            <div class="input-group mt-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true">Дата:</span>
+                                </div>
+                                <input type="text" class="card_month form-control"
+                                       placeholder="MM" aria-label="subscriptionType"
+                                       aria-describedby="basic-addon1" maxlength="2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true">/</span>
+                                </div>
+                                <input type="text" class="card_year form-control"
+                                       placeholder="РР" aria-label="subscriptionType"
+                                       aria-describedby="basic-addon1" maxlength="2">
+                            </div>
+                            <div class="input-group mt-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true">CVV код:</span>
+                                </div>
+                                <input type="text" class="card_cvv form-control"
+                                       placeholder="CVV" aria-label="subscriptionType"
+                                       aria-describedby="basic-addon1" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group mt-2">
+                                <label class="radio">
+                                    <input class="radio_in" type="radio" name="subscription_type" checked value="MONTHLY"/>ЩОМІСЯЧНА
+                                </label>
+                            </div>
+                            <div class="input-group mt-2">
+                                <label class="radio">
+                                    <input class="radio_in" type="radio" name="subscription_type" value="ANNUAL"/>ЩОРІЧНА
+                                </label>
+                            </div>
+                            <div class="input-group mt-1">
+                                <h5>Ціна: <label class="subscription_price">10</label> USD</h5>
+                            </div>
+                        </div>
+                        <div class="modal-footer mt-2">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                            <button type="button" class="btn subscribe btn-primary">Підтвердити</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row justify-content-md-center">
-        <div class="col-md-3 mt-5">
+        <div class="col-md-3 mt-2">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" aria-hidden="true">New:</span>
+                    <span class="input-group-text" aria-hidden="true">Пошук:</span>
                 </div>
-                <input type="text" class="topicTitle form-control"
-                       placeholder="Topic title" aria-label="topicTitle"
+                <input type="text" class="search_in form-control"
+                       placeholder="Назва фільму"
                        aria-describedby="basic-addon1">
             </div>
         </div>
-        <div class="col-md-2 mt-5">
-            <input class="topicEndDate form-control" type="date" />
+        <div class="col-md-3 mt-2">
+            <button type="button" class="btn search_btn btn-primary">
+                Знайти
+            </button>
         </div>
-        <div class="col-md-2 mt-5">
-            <button class="createTopic btn btn-primary" type="button">Create
-                topic</button>
-        </div>
-        <div class="col-md-2 mt-5">
-            <div class="col-md-6">
-                <button class="ctView btn btn-primary" type="button">Closed
-                    topics</button>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <h3 class="topicMes text-white"></h3>
-    </div>
-    <div class="row justify-content-md-center">
-        <h1 class="col-md-12 text-center text-white mt-3 mb-3">Active
-            topics:</h1>
-        <div class="atpc col-md-5"></div>
-    </div>
-    <div class="row justify-content-md-center">
-        <h1 class="col-md-12 text-center text-white mt-3 mb-3">Answered
-            topics:</h1>
-        <div class="antpc col-md-5"></div>
     </div>
 </div>
 <script src="../js/jquery-3.3.1.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.modal.min.js"></script>
 <script src="../js/home.js"></script>
 
 </body>

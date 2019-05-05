@@ -1,9 +1,7 @@
 package kpi.leonchyk.diploma.service.impl;
 
-import kpi.leonchyk.diploma.domain.Role;
-import kpi.leonchyk.diploma.domain.Subscription;
-import kpi.leonchyk.diploma.domain.SubscriptionType;
-import kpi.leonchyk.diploma.domain.User;
+import kpi.leonchyk.diploma.domain.*;
+import kpi.leonchyk.diploma.repository.FilmRepo;
 import kpi.leonchyk.diploma.repository.RoleRepo;
 import kpi.leonchyk.diploma.repository.SubscriptionRepo;
 import kpi.leonchyk.diploma.repository.UserRepo;
@@ -16,29 +14,28 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 
+import static kpi.leonchyk.diploma.util.Utility.isSubscriptionEnd;
 import static kpi.leonchyk.diploma.util.Utility.processSubscriptionPeriodAndPrice;
 import static org.apache.logging.log4j.util.Strings.trimToNull;
 
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final UserRepo userRepo;
-    private final RoleRepo roleRepo;
-    private final SubscriptionRepo subscriptionRepo;
-    private final BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, SubscriptionRepo subscriptionRepo,
-                           BCryptPasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
-        this.subscriptionRepo = subscriptionRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepo userRepo;
+    @Autowired
+    private RoleRepo roleRepo;
+    @Autowired
+    private SubscriptionRepo subscriptionRepo;
+    @Autowired
+    private FilmRepo filmRepo;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User findByUsername(String username) {
@@ -46,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(String username, String password) {
+    public void signUp(String username, String password) {
         if (trimToNull(username) == null || trimToNull(password) == null) {
             throw new RuntimeException("Required field is null.");
         }
@@ -58,8 +55,17 @@ public class UserServiceImpl implements UserService {
         user.setRegDate(new Date());
         user.setBalance(0);
         user.setActive(true);
+        user.setSubscribed(false);
         userRepo.save(user);
         LOGGER.info("User successfully created: {}", user);
+    }
+
+    @Override
+    public void checkSubscriptionDate(User user) {
+        if (isSubscriptionEnd(user)) {
+            user.setSubscribed(false);
+            userRepo.save(user);
+        }
     }
 
     @Override
@@ -68,6 +74,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findByUsername(principal.getName());
         Subscription subscription = processSubscriptionPeriodAndPrice(subscriptionType, user);
         user.getSubscriptions().add(subscription);
+        user.setSubscribed(true);
         subscriptionRepo.save(subscription);
+        LOGGER.info("Subscribed: {}", subscription);
+    }
+
+    @Override
+    public Collection<Film> getFilms() {
+        return filmRepo.findAll();
     }
 }
