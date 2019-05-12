@@ -1,1 +1,0 @@
-INSERT INTO `role` VALUES (1,'PORTAL_USER');

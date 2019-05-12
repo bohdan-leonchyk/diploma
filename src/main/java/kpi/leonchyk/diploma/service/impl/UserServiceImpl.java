@@ -26,6 +26,8 @@ import static org.apache.logging.log4j.util.Strings.trimToNull;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final String ROLE = "PORTAL_USER";
+
     @Autowired
     private UserRepo userRepo;
     @Autowired
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(username.toLowerCase());
         user.setPassword(passwordEncoder.encode(password));
-        Role role = roleRepo.findByRole("PORTAL_USER");
+        Role role = roleRepo.findByRole(ROLE);
         user.setRoles(new HashSet<>(Collections.singletonList(role)));
         user.setRegDate(new Date());
         user.setBalance(0);
@@ -65,6 +67,7 @@ public class UserServiceImpl implements UserService {
         if (isSubscriptionEnd(user)) {
             user.setSubscribed(false);
             userRepo.save(user);
+            LOGGER.info("Subscription has been ended");
         }
     }
 

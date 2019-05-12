@@ -22,6 +22,7 @@ public class Subscription implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "subscription_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private SubscriptionType subscriptionType;
     @Column(name = "subscription_start_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

@@ -12,8 +12,9 @@ public class Film {
     private int id;
     @Column(name = "title", nullable = false, unique = true)
     private String title;
-    @Column(name = "genre", nullable = false, unique = true)
-    private String genre;
+    @Column(name = "genre", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
     @Column(name = "description")
     private String description;
     @Column(name = "link", nullable = false, unique = true)
@@ -35,11 +36,11 @@ public class Film {
         this.title = title;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 

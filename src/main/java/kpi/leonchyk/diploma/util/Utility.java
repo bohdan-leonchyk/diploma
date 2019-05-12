@@ -45,7 +45,7 @@ public interface Utility {
         Calendar calendar = Calendar.getInstance();
         subscription.setSubscriptionStartDate(calendar.getTime());
         subscription.setSubscriptionType(subscriptionType);
-        if (user.isSubscribed()) {
+        if (user.isSubscribed() && !user.getSubscriptions().isEmpty()) {
             Date lastSubscriptionDate = user.getSubscriptions().get(user.getSubscriptions().size() - 1).getGetSubscriptionEndDate();
             calendar.setTime(lastSubscriptionDate);
         }
@@ -63,7 +63,9 @@ public interface Utility {
 
     static boolean isSubscriptionEnd(User user) {
         if (user.isSubscribed()) {
-            Calendar calendar = Calendar.getInstance();
+            if (user.getSubscriptions().isEmpty()) {
+                return false;
+            }
             Date lastSubscriptionDate = user.getSubscriptions().get(user.getSubscriptions().size() - 1).getGetSubscriptionEndDate();
             return lastSubscriptionDate.before(new Date());
         }
