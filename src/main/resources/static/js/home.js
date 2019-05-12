@@ -38,30 +38,34 @@ $.ajax({
     url : '/user/home/films',
     dataType : 'json',
     success : function(films) {
-        if (films.length == 0) {
-            $('.film_container').append('<div class="col-md-4"><h2>Контент відсутній</h2></div>');
-        } else {
-            $.each(films, function(k, v) {
-                $('.film_container').append(
-                '<div class="col-md-4">' +
-                  '<div class="card mb-4 box-shadow">' +
-                    '<img class="card-img-top" src="../../images/films/'+v.id+'.jpg"'+' alt="Card image cap">' +
-                    '<div class="card-body">' +
-                      '<h5>'+v.title+'</h5>' +
-                      '<div class="d-flex justify-content-between align-items-center">' +
-                        '<div class="btn-group">' +
-                          '<button type="button" class="btn btn-sm btn-outline-primary play_btn" onClick="play_click(\''+v.link+'\')">PLAY</button>' +
-                        '</div>' +
-                        '<small class="text-muted">'+v.genre+'</small>' +
-                      '</div>' +
-                    '</div>' +
-                  '</div>' +
-                '</div>'
-                );
-            });
-        }
+         placeFilms(films);
     }
 });
+
+function placeFilms(films) {
+    if (films.length === 0) {
+        $('.film_container').append('<div class="col-md-4"><h2>Контент відсутній</h2></div>');
+    } else {
+        $.each(films, function(k, v) {
+            $('.film_container').append(
+            '<div class="col-md-4">' +
+              '<div class="card mb-4 box-shadow">' +
+                '<img class="card-img-top" src="../../images/films/'+v.id+'.jpg"'+' alt="Card image cap">' +
+                '<div class="card-body">' +
+                  '<h5>'+v.title+'</h5>' +
+                  '<div class="d-flex justify-content-between align-items-center">' +
+                    '<div class="btn-group">' +
+                      '<button type="button" class="btn btn-sm btn-outline-primary play_btn" onClick="play_click(\''+v.link+'\')">ДИВИТИСЬ</button>' +
+                    '</div>' +
+                    '<small class="text-muted">'+v.genre+'</small>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>'
+            );
+        });
+    }
+}
 
 $('.search_btn').click(function() {
     $.ajax({
@@ -72,28 +76,7 @@ $('.search_btn').click(function() {
         },
         success : function(films) {
             $('.film_container').empty();
-            if (films.length === 0) {
-                $('.film_container').append('<div class="col-md-4"><h2>Контент відсутній</h2></div>');
-            } else {
-                $.each(films, function(k, v) {
-                    $('.film_container').append(
-                    '<div class="col-md-4">' +
-                      '<div class="card mb-4 box-shadow">' +
-                        '<img class="card-img-top" src="../../images/films/'+v.id+'.jpg"'+' alt="Card image cap">' +
-                        '<div class="card-body">' +
-                          '<h5>'+v.title+'</h5>' +
-                          '<div class="d-flex justify-content-between align-items-center">' +
-                            '<div class="btn-group">' +
-                              '<button type="button" class="btn btn-sm btn-outline-primary play_btn" onClick="play_click(\''+v.link+'\')">PLAY</button>' +
-                            '</div>' +
-                            '<small class="text-muted">'+v.genre+'</small>' +
-                          '</div>' +
-                        '</div>' +
-                      '</div>' +
-                    '</div>'
-                    );
-                });
-            }
+            placeFilms(films);
         }
     });
 });
