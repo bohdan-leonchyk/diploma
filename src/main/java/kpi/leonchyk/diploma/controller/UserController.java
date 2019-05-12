@@ -58,4 +58,13 @@ public class UserController {
     public ResponseEntity<?> getFilms() {
         return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/user/home/films/title", method = RequestMethod.POST)
+    public ResponseEntity<?> findFilmsByTitle(@RequestParam String title) {
+        if (title == null || title.trim().length() == 0) {
+            return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(userService.findFilmsByTitle(title), HttpStatus.OK);
+        }
+    }
 }

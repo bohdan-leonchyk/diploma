@@ -86,4 +86,10 @@ public class UserServiceImpl implements UserService {
     public Collection<Film> getFilms() {
         return filmRepo.findAll();
     }
+
+    @Override
+    public Collection<Film> findFilmsByTitle(String title) {
+        LOGGER.info("Find films by title: {}", title);
+        return filmRepo.findByTitleContaining(title);
+    }
 }

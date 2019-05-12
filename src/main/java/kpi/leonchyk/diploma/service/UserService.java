@@ -13,4 +13,5 @@ public interface UserService {
     void checkSubscriptionDate(User user);
     void subscribe(SubscriptionType subscriptionType, Principal principal);
     Collection<Film> getFilms();
+    Collection<Film> findFilmsByTitle(String title);
 }

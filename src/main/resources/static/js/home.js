@@ -1,3 +1,6 @@
+var is_subscribed;
+var is_empty;
+
 $.ajax({
     type : 'GET',
     url : '/user/home/data',
@@ -5,49 +8,95 @@ $.ajax({
     success : function(data) {
         $('.username').text(data.username);
         if (data.subscribed === true && data.subscriptions.length > 0) {
+            is_subscribed = true;
+            is_empty = false;
             var sed = data.subscriptions.slice(-1).pop().getSubscriptionEndDate.split(' ')[0];
             $('.subscription_info').text(sed);
             $('.pre_subscribe').css("visibility", "hidden");
-//            $('.subscription_info_prefix').removeClass('text-warning');
-//            $('.subscription_info_prefix').addClass('text-info');
         } else {
+            is_subscribed = false;
+            is_empty = true;
             $('.subscription_info').text('');
             $('.pre_subscribe').css("visibility", "visible");
-//            $('.subscription_info_prefix').removeClass('text-info');
-//            $('.subscription_info_prefix').addClass('text-warning');
             $('.subscription_info_prefix').text("Підписка не оформлена");
         }
     }
 });
+
+
+function play_click(arg) {
+    if (is_empty === false && is_subscribed === true) {
+        window.open("https://youtube.com/embed/"+arg);
+    } else {
+        alert('Оформіть будь ласка підписку!');
+    }
+}
+
 
 $.ajax({
     type : 'GET',
     url : '/user/home/films',
     dataType : 'json',
     success : function(films) {
-        console.log(films);
-        $.each(films, function(k, v) {
-        console.log(k, v);
-            $('.film_container').append(
-            '<div class="col-md-4">' +
-              '<div class="card mb-4 box-shadow">' +
-                '<img class="card-img-top" data-src="../images/films/'+v.id+'.jpg alt="Card image cap">' +
-                '<div class="card-body">' +
-                  '<p class="card-text">'+v.title+'</p>' +
-                  '<div class="d-flex justify-content-between align-items-center">' +
-                    '<div class="btn-group">' +
-                      '<button type="button" class="btn btn-sm btn-outline-secondary">View</button>' +
+        if (films.length == 0) {
+            $('.film_container').append('<div class="col-md-4"><h2>Контент відсутній</h2></div>');
+        } else {
+            $.each(films, function(k, v) {
+                $('.film_container').append(
+                '<div class="col-md-4">' +
+                  '<div class="card mb-4 box-shadow">' +
+                    '<img class="card-img-top" src="../../images/films/'+v.id+'.jpg"'+' alt="Card image cap">' +
+                    '<div class="card-body">' +
+                      '<h5>'+v.title+'</h5>' +
+                      '<div class="d-flex justify-content-between align-items-center">' +
+                        '<div class="btn-group">' +
+                          '<button type="button" class="btn btn-sm btn-outline-primary play_btn" onClick="play_click(\''+v.link+'\')">PLAY</button>' +
+                        '</div>' +
+                        '<small class="text-muted">'+v.genre+'</small>' +
+                      '</div>' +
                     '</div>' +
-                    '<small class="text-muted">9 mins</small>' +
                   '</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>'
-            );
-        });
+                '</div>'
+                );
+            });
+        }
     }
 });
 
+$('.search_btn').click(function() {
+    $.ajax({
+        type : 'POST',
+        url : '/user/home/films/title',
+        data : {
+            title : $('.search_in').val()
+        },
+        success : function(films) {
+            $('.film_container').empty();
+            if (films.length === 0) {
+                $('.film_container').append('<div class="col-md-4"><h2>Контент відсутній</h2></div>');
+            } else {
+                $.each(films, function(k, v) {
+                    $('.film_container').append(
+                    '<div class="col-md-4">' +
+                      '<div class="card mb-4 box-shadow">' +
+                        '<img class="card-img-top" src="../../images/films/'+v.id+'.jpg"'+' alt="Card image cap">' +
+                        '<div class="card-body">' +
+                          '<h5>'+v.title+'</h5>' +
+                          '<div class="d-flex justify-content-between align-items-center">' +
+                            '<div class="btn-group">' +
+                              '<button type="button" class="btn btn-sm btn-outline-primary play_btn" onClick="play_click(\''+v.link+'\')">PLAY</button>' +
+                            '</div>' +
+                            '<small class="text-muted">'+v.genre+'</small>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div>' +
+                    '</div>'
+                    );
+                });
+            }
+        }
+    });
+});
 
 $('.subscribe').click(function() {
     if ($('.card_number').val().length == 16
