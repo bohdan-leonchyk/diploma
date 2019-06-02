@@ -1,5 +1,6 @@
 package kpi.leonchyk.diploma.controller;
 
+import kpi.leonchyk.diploma.domain.Genre;
 import kpi.leonchyk.diploma.domain.SubscriptionType;
 import kpi.leonchyk.diploma.domain.User;
 import kpi.leonchyk.diploma.service.UserService;
@@ -31,7 +32,7 @@ public class UserController {
             userService.signUp(username, password);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -50,6 +51,7 @@ public class UserController {
             userService.subscribe(type, principal);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
+            LOGGER.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,12 +61,21 @@ public class UserController {
         return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/home/films/title", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/home/films/title", method = RequestMethod.GET)
     public ResponseEntity<?> findFilmsByTitle(@RequestParam String title) {
         if (title == null || title.trim().length() == 0) {
             return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(userService.findFilmsByTitle(title), HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/user/home/films/genre", method = RequestMethod.GET)
+    public ResponseEntity<?> findFilmsByGenre(@RequestParam String genre) {
+        if (genre == null || genre.trim().length() == 0) {
+            return new ResponseEntity<>(userService.getFilms(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(userService.findFilmsByGenre(genre), HttpStatus.OK);
         }
     }
 }

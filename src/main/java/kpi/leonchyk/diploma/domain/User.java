@@ -13,26 +13,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
     @JsonIgnore
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
-    @Column(name = "is_active", nullable = false)
+    @Column(nullable = false)
     private boolean isActive;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @Column(name = "reg_date", nullable = false)
+    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss", timezone = "Europe/Kiev")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Date regDate;
-    @Column(name = "balance", nullable = false)
+    @Column(nullable = false)
     private int balance;
-    @Column(name = "is_subscribed", nullable = false)
+    @Column(nullable = false)
     private boolean isSubscribed;
-    @Column(name = "subscriptions")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions = new ArrayList<>();
 

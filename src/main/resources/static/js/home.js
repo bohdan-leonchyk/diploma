@@ -69,7 +69,7 @@ function placeFilms(films) {
 
 $('.search_btn').click(function() {
     $.ajax({
-        type : 'POST',
+        type : 'GET',
         url : '/user/home/films/title',
         data : {
             title : $('.search_in').val()
@@ -79,6 +79,20 @@ $('.search_btn').click(function() {
             placeFilms(films);
         }
     });
+});
+
+$('.dropdown-item').click(function() {
+    $.ajax({
+            type : 'GET',
+            url : '/user/home/films/genre',
+            data : {
+                genre : $(this).text()
+            },
+            success : function(films) {
+                $('.film_container').empty();
+                placeFilms(films);
+            }
+        });
 });
 
 $('.subscribe').click(function() {

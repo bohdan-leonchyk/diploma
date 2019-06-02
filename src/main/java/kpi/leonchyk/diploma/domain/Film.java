@@ -10,14 +10,13 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id")
     private int id;
-    @Column(name = "title", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String title;
-    @Column(name = "genre", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Genre genre;
-    @Column(name = "description")
     private String description;
-    @Column(name = "link", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String link;
 
     public int getId() {

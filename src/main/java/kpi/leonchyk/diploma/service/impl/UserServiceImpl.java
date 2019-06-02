@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 import static kpi.leonchyk.diploma.util.Utility.isSubscriptionEnd;
 import static kpi.leonchyk.diploma.util.Utility.processSubscriptionPeriodAndPrice;
@@ -91,5 +88,16 @@ public class UserServiceImpl implements UserService {
     public Collection<Film> findFilmsByTitle(String title) {
         LOGGER.info("Find films by title: {}", title);
         return filmRepo.findByTitleContaining(title);
+    }
+
+    @Override
+    public Collection<Film> findFilmsByGenre(String genre) {
+        LOGGER.info("Find films by genre: {}", genre);
+        try {
+            Genre genreType = Genre.valueOf(genre);
+            return filmRepo.findByGenre(genreType.name());
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyList();
+        }
     }
 }

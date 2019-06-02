@@ -101,7 +101,7 @@
                 <div class="col-md-5 mt-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" aria-hidden="true">Пошук:</span>
+                            <span class="input-group-text" aria-hidden="true">Пошук за назвою:</span>
                         </div>
                         <input type="text" class="search_in form-control"
                                placeholder="Назва фільму"
@@ -110,6 +110,24 @@
                 </div>
                 <div class="col-md-3 mt-2">
                     <button type="button" class="btn search_btn btn-primary">Шукати</button>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col-md-5 mt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" aria-hidden="true">Пошук за жанром:</span>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-3">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Оберіть жанр</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button class="dropdown-item" type="button">ACTION</button>
+                            <button class="dropdown-item" type="button">COMEDY</button>
+                            <button class="dropdown-item" type="button">DRAMA</button>
+                            <button class="dropdown-item" type="button">HORROR</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,6 +147,7 @@
 </footer>
 
 <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/jquery.modal.min.js"></script>
 <script src="../js/home.js"></script>

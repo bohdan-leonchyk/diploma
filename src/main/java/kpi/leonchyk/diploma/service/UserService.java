@@ -14,4 +14,5 @@ public interface UserService {
     void subscribe(SubscriptionType subscriptionType, Principal principal);
     Collection<Film> getFilms();
     Collection<Film> findFilmsByTitle(String title);
+    Collection<Film> findFilmsByGenre(String genre);
 }
