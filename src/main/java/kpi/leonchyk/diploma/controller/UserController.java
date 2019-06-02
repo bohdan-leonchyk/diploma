@@ -1,6 +1,5 @@
 package kpi.leonchyk.diploma.controller;
 
-import kpi.leonchyk.diploma.domain.Genre;
 import kpi.leonchyk.diploma.domain.SubscriptionType;
 import kpi.leonchyk.diploma.domain.User;
 import kpi.leonchyk.diploma.service.UserService;
