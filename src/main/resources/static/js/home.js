@@ -83,16 +83,16 @@ $('.search_btn').click(function() {
 
 $('.dropdown-item').click(function() {
     $.ajax({
-            type : 'GET',
-            url : '/user/home/films/genre',
-            data : {
-                genre : $(this).text()
-            },
-            success : function(films) {
-                $('.film_container').empty();
-                placeFilms(films);
-            }
-        });
+        type : 'GET',
+        url : '/user/home/films/genre',
+        data : {
+            genre : $(this).text()
+        },
+        success : function(films) {
+            $('.film_container').empty();
+            placeFilms(films);
+        }
+    });
 });
 
 $('.subscribe').click(function() {
